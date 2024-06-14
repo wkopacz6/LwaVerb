@@ -1,0 +1,3 @@
+[submodule "dsp"]
+	path = dsp
+	url = https://signalsmith-audio.co.uk/code/dsp.git
