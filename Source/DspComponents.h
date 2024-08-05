@@ -1,12 +1,3 @@
-/*
-  ==============================================================================
-
-    DspComponents.h
-    Created: 11 Mar 2024 6:32:19pm
-    Author:  Walter Kopacz
-
-  ==============================================================================
-*/
 
 #pragma once
 
@@ -14,6 +5,7 @@
 #include <math.h>
 
 #include "../dsp/delay.h"
+// TODO: Remove JuceHeader
 #include "JuceHeader.h"
 
 #undef DELAY_MOD

@@ -1,10 +1,3 @@
-/*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin editor.
-
-  ==============================================================================
-*/
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
@@ -22,6 +15,8 @@ TheVerbAudioProcessorEditor::TheVerbAudioProcessorEditor (TheVerbAudioProcessor&
     addAndMakeVisible(dry);
     addAndMakeVisible(decay);
     addAndMakeVisible(roomSize);
+    
+    wet.setLookAndFeel(&knobLnf);
 }
 
 TheVerbAudioProcessorEditor::~TheVerbAudioProcessorEditor()
@@ -62,6 +57,8 @@ void TheVerbAudioProcessorEditor::paint (juce::Graphics& g)
 #endif
     addAndMakeVisible(lpCutoff);
     addAndMakeVisible(lpCutoffLabel);
+    
+    wet.setRotaryParameters({ 0.0, 4.18879, true });
 }
 
 void TheVerbAudioProcessorEditor::resized()
@@ -78,7 +75,7 @@ void TheVerbAudioProcessorEditor::resized()
     dry.setBounds(sliderAndLabelBounds.removeFromTop(120));
     dryLabel.setBounds(sliderAndLabelBounds);
     
-    sliderAndLabelBounds = b.removeFromLeft(70);
+    sliderAndLabelBounds = b.removeFromLeft(100);
     wet.setBounds(sliderAndLabelBounds.removeFromTop(120));
     wetLabel.setBounds(sliderAndLabelBounds);
     
