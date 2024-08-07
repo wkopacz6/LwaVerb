@@ -21,7 +21,8 @@ public:
                            const float rotaryStartAngle, const float rotaryEndAngle, juce::Slider& slider) override;
 private:
     std::unique_ptr<juce::Drawable> outerHex { juce::Drawable::createFromImageData(BinaryData::outer_hex_svg, BinaryData::outer_hex_svgSize) };
-    std::unique_ptr<juce::Drawable> innerHex { juce::Drawable::createFromImageData(BinaryData::inner_hex_svg, BinaryData::inner_hex_svgSize) };    
+    std::unique_ptr<juce::Drawable> innerHex { juce::Drawable::createFromImageData(BinaryData::inner_hex_svg, BinaryData::inner_hex_svgSize) };
+    
 };
 
 class TheVerbKnob

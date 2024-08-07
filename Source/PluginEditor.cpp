@@ -9,7 +9,7 @@ TheVerbAudioProcessorEditor::TheVerbAudioProcessorEditor (TheVerbAudioProcessor&
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (400, 300);
+    setSize (600, 500);
     
     addAndMakeVisible(wet);
     addAndMakeVisible(dry);
@@ -17,6 +17,7 @@ TheVerbAudioProcessorEditor::TheVerbAudioProcessorEditor (TheVerbAudioProcessor&
     addAndMakeVisible(roomSize);
     
     wet.setLookAndFeel(&knobLnf);
+    roomSize.setLookAndFeel(&knobLnf);
 }
 
 TheVerbAudioProcessorEditor::~TheVerbAudioProcessorEditor()
@@ -59,6 +60,8 @@ void TheVerbAudioProcessorEditor::paint (juce::Graphics& g)
     addAndMakeVisible(lpCutoffLabel);
     
     wet.setRotaryParameters({ 0.0, 4.18879, true });
+    roomSize.setRotaryParameters({ 0.0, 4.18879, true });
+
 }
 
 void TheVerbAudioProcessorEditor::resized()
@@ -66,8 +69,8 @@ void TheVerbAudioProcessorEditor::resized()
     auto b { getLocalBounds() };
     
     // Margins
-    b.removeFromTop(75);
-    b.removeFromBottom(75);
+    b.removeFromTop(10);
+    b.removeFromBottom(10);
     b.removeFromLeft(25);
     b.removeFromRight(25);
     
@@ -76,11 +79,11 @@ void TheVerbAudioProcessorEditor::resized()
     dryLabel.setBounds(sliderAndLabelBounds);
     
     sliderAndLabelBounds = b.removeFromLeft(100);
-    wet.setBounds(sliderAndLabelBounds.removeFromTop(120));
+    wet.setBounds(sliderAndLabelBounds.removeFromTop(100));
     wetLabel.setBounds(sliderAndLabelBounds);
     
-    sliderAndLabelBounds = b.removeFromLeft(70);
-    roomSize.setBounds(sliderAndLabelBounds.removeFromTop(120));
+    sliderAndLabelBounds = b.removeFromLeft(300);
+    roomSize.setBounds(sliderAndLabelBounds.removeFromTop(300));
     roomSizeLabel.setBounds(sliderAndLabelBounds);
     
     sliderAndLabelBounds = b.removeFromLeft(70);

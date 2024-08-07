@@ -13,42 +13,53 @@
 void TheVerbKnobLnF::drawRotarySlider (juce::Graphics& g, int x, int y, int width, int height, float sliderPos,
                                       const float rotaryStartAngle, const float rotaryEndAngle, juce::Slider& slider)
 {
-    
     auto bounds = juce::Rectangle<int> (x, y, width, height).toFloat().reduced (10);
-
     auto toAngle = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
     
+    // Draw endpoint dots
+    
+    // A little bit of geometry to make the dots the right height
+    const auto dotOffsetMultiplier { std::sin(30.0 * 2.0 * 3.14159 / 360.0) / (2 * std::sin(30.0 * 2.0 * 3.14159 / 360.0) + 1) };
+
+    
+    const auto bottomHexHeight { bounds.getHeight() * dotOffsetMultiplier };
+    auto boundsCopy { bounds };
+    auto bottomHexBounds { boundsCopy.removeFromBottom(bottomHexHeight) };
+    const auto dotSize { bounds.proportionOfWidth(0.0365) };
+    
+    g.setColour(juce::Colour(0xff6f6f6f));
+    auto leftEndMarkerBounds { bottomHexBounds.removeFromLeft(dotSize) };
+    g.fillEllipse(leftEndMarkerBounds.removeFromTop(dotSize));
+    
+    auto rightEndMarkerBounds { bottomHexBounds.removeFromRight(dotSize) };
+    g.fillEllipse(rightEndMarkerBounds.removeFromTop(dotSize));
+    
     // Draw outer hexagon
-    const auto outercenterX { innerHex->getX() + innerHex->getWidth() };
-    const auto outercenterY { innerHex->getY() + innerHex->getHeight() };
-    const auto rotationTransform { juce::AffineTransform::rotation(toAngle, outerHex->getX() + outerHex->getWidth() / 2,outerHex-> getY() + outerHex->getHeight() / 2) };
-    outerHex->setTransform(rotationTransform);
+    const auto outerHexBounds { outerHex->getDrawableBounds() };
+    const auto outerRotationTransform { juce::AffineTransform::rotation(toAngle, outerHexBounds.getCentreX(), outerHexBounds.getCentreY()) };
+    outerHex->setTransform(outerRotationTransform);
     outerHex->drawWithin(g, bounds, juce::RectanglePlacement::centred, 1.0);
     
+    const auto innerHexBounds { innerHex->getDrawableBounds() };
+    const auto innerRotationTransform { juce::AffineTransform::rotation(toAngle, innerHexBounds.getCentreX(), innerHexBounds.getCentreY()) };
+    innerHex->setTransform(innerRotationTransform);
     
-    // Draw inner hexagon
-    const auto ix { innerHex->getX() };
-    const auto iy { innerHex->getY() };
-    const auto iwidth { innerHex->getWidth() };
-    const auto iheight { innerHex->getHeight()};
-    const auto centerX { innerHex->getX() + innerHex->getWidth() / 2.0 };
-    const auto centerY { innerHex->getY() + innerHex->getHeight() / 2.0 };
-    
-    
-    const auto innerRotationTransform { juce::AffineTransform::rotation(toAngle, 1.63169, 1.4268105) };
-    innerHex->setDrawableTransform(innerRotationTransform);
-    
-    const auto innerBounds { bounds.withSizeKeepingCentre(20, 20) };
-    const auto containerBounds { bounds.withSizeKeepingCentre(40, 40) };
-    auto innerImage { juce::Image(juce::Image::PixelFormat::RGB, containerBounds.getWidth(), containerBounds.getHeight(), true) };
+    const auto targetInnerHexBounds { bounds.withSizeKeepingCentre(bounds.proportionOfWidth(0.25), bounds.proportionOfHeight(0.25)) };
+    // We want the bounds for the actual image that contains the inner hex to be bigger than the hex so it won't cutoff the blur
+    const auto imageBounds { bounds.withSizeKeepingCentre(bounds.proportionOfWidth(0.5), bounds.proportionOfHeight(0.5)) };
+    auto innerImage { juce::Image(juce::Image::PixelFormat::RGB, imageBounds.getWidth(), imageBounds.getHeight(), true) };
     auto innerG { juce::Graphics(innerImage) };
-    innerHex->drawWithin(innerG, juce::Rectangle<float>(10, 10, innerBounds.getWidth(), innerBounds.getHeight()), juce::RectanglePlacement::centred, 1.0);
+    innerHex->drawWithin(innerG, juce::Rectangle<float>(targetInnerHexBounds.getWidth() / 2, targetInnerHexBounds.getHeight() / 2, targetInnerHexBounds.getWidth(), targetInnerHexBounds.getHeight()), juce::RectanglePlacement::centred, 1.0);
+            
     
+    const auto blurRadius { static_cast<size_t>(sliderPos * bounds.proportionOfWidth(0.1)) };
     
-    auto blur { melatonin::CachedBlur(static_cast<size_t>(11)) };
-        
-    g.drawImageAt(blur.render(innerImage), containerBounds.getX(), containerBounds.getY());
-    // Blur inner hexagon
-    
-    // Draw endpoint dots
+    if (blurRadius > 0)
+    {
+        melatonin::CachedBlur blur { blurRadius };
+        innerImage = blur.render(innerImage);
+    }
+
+    // Blur the inner hex
+    g.drawImageAt(innerImage, imageBounds.getX(), imageBounds.getY());
 }
