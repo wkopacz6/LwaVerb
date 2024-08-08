@@ -7,17 +7,22 @@ TheVerbAudioProcessorEditor::TheVerbAudioProcessorEditor (TheVerbAudioProcessor&
     : AudioProcessorEditor (&p)
     , audioProcessor (p)
 {
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
-    setSize (600, 500);
+    setSize (700, 525);
     
     addAndMakeVisible(wet);
     addAndMakeVisible(dry);
-    addAndMakeVisible(decay);
     addAndMakeVisible(roomSize);
-    
-    wet.setLookAndFeel(&knobLnf);
-    roomSize.setLookAndFeel(&knobLnf);
+    addAndMakeVisible(decay);
+    addAndMakeVisible(lpCutoff);
+        
+    dryAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment> (audioProcessor.apvts, Params::dryId, dry.getSlider());
+    wetAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment> (audioProcessor.apvts, Params::wetId, wet.getSlider());
+    roomSizeAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment> (audioProcessor.apvts, Params::roomSizeId, roomSize.getSlider());
+    decayAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment> (audioProcessor.apvts, Params::decayId, decay.getSlider());
+#if USE_MODULATION
+    modFreqMultAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment> (audioProcessor.apvts, Params::modFreqId, modFreqMult.getKnob());
+#endif
+    lpCutoffAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment> (audioProcessor.apvts, Params::lpCutoffId, lpCutoff.getSlider());
 }
 
 TheVerbAudioProcessorEditor::~TheVerbAudioProcessorEditor()
@@ -28,72 +33,45 @@ TheVerbAudioProcessorEditor::~TheVerbAudioProcessorEditor()
 void TheVerbAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+    g.fillAll (Colors::backgroundTeal);
     
-    dryAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment> (audioProcessor.apvts, Params::dryId, dry);
-    wetAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment> (audioProcessor.apvts, Params::wetId, wet);
-    roomSizeAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment> (audioProcessor.apvts, Params::roomSizeId, roomSize);
-    decayAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment> (audioProcessor.apvts, Params::decayId, decay);
-#if USE_MODULATION
-    modFreqMultAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment> (audioProcessor.apvts, Params::modFreqId, modFreqMult);
-#endif
-    lpCutoffAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment> (audioProcessor.apvts, Params::lpCutoffId, lpCutoff);
+    auto b { getLocalBounds().toFloat() };
     
-    dryLabel.setText("Dry", juce::dontSendNotification);
-    wetLabel.setText("Wet", juce::dontSendNotification);
-    roomSizeLabel.setText("Room Size", juce::dontSendNotification);
-    decayLabel.setText("Decay Time", juce::dontSendNotification);
-    lpCutoffLabel.setText("LP Cutoff", juce::dontSendNotification);
+    b.removeFromTop(30.0f);
+    logo->drawWithin(g, b.removeFromTop(40.0f), juce::RectanglePlacement::centred, 1.0);
     
-    addAndMakeVisible(dry);
-    addAndMakeVisible(wet);
-    addAndMakeVisible(roomSize);
-    addAndMakeVisible(decay);
-    addAndMakeVisible(dryLabel);
-    addAndMakeVisible(wetLabel);
-    addAndMakeVisible(roomSizeLabel);
-    addAndMakeVisible(decayLabel);
-#if DELAY_MOD
-    addAndMakeVisible(modFreqMult);
-#endif
-    addAndMakeVisible(lpCutoff);
-    addAndMakeVisible(lpCutoffLabel);
-    
-    wet.setRotaryParameters({ 0.0, 4.18879, true });
-    roomSize.setRotaryParameters({ 0.0, 4.18879, true });
-
+    b.removeFromTop(25.0f);
 }
 
 void TheVerbAudioProcessorEditor::resized()
 {
     auto b { getLocalBounds() };
+    const auto margin { 25 };
+    const auto knobSize { 200 };
     
     // Margins
-    b.removeFromTop(10);
-    b.removeFromBottom(10);
-    b.removeFromLeft(25);
-    b.removeFromRight(25);
+    b.removeFromTop(margin);
+    b.removeFromBottom(margin);
+    b.removeFromLeft(margin);
+    b.removeFromRight(margin);
     
-    auto sliderAndLabelBounds { b.removeFromLeft(70) };
-    dry.setBounds(sliderAndLabelBounds.removeFromTop(120));
-    dryLabel.setBounds(sliderAndLabelBounds);
+    logo->setBounds(b.removeFromTop(30));
     
-    sliderAndLabelBounds = b.removeFromLeft(100);
-    wet.setBounds(sliderAndLabelBounds.removeFromTop(100));
-    wetLabel.setBounds(sliderAndLabelBounds);
+    b.removeFromTop(margin);
     
-    sliderAndLabelBounds = b.removeFromLeft(300);
-    roomSize.setBounds(sliderAndLabelBounds.removeFromTop(300));
-    roomSizeLabel.setBounds(sliderAndLabelBounds);
+    auto reverbControlsRow { b.removeFromTop(knobSize) };
+    roomSize.setBounds(reverbControlsRow.removeFromLeft(knobSize));
+    reverbControlsRow.removeFromLeft(margin);
+    decay.setBounds(reverbControlsRow.removeFromLeft(knobSize));
+    reverbControlsRow.removeFromLeft(margin);
+    lpCutoff.setBounds(reverbControlsRow.removeFromLeft(knobSize));
     
-    sliderAndLabelBounds = b.removeFromLeft(70);
-    decay.setBounds(sliderAndLabelBounds.removeFromTop(120));
-    decayLabel.setBounds(sliderAndLabelBounds);
-
-#if DELAY_MOD
-    modFreqMult.setBounds(b.removeFromLeft(65));
-#endif
-    sliderAndLabelBounds = b.removeFromLeft(70);
-    lpCutoff.setBounds(sliderAndLabelBounds.removeFromTop(120));
-    lpCutoffLabel.setBounds(sliderAndLabelBounds);
+    b.removeFromTop(margin);
+    
+    auto wetDryRow { b.removeFromTop(knobSize) };
+    wetDryRow.removeFromLeft(112);
+    wetDryRow.removeFromRight(112);
+    dry.setBounds(wetDryRow.removeFromLeft(knobSize));
+    wetDryRow.removeFromLeft(margin);
+    wet.setBounds(wetDryRow.removeFromLeft(knobSize));
 }
