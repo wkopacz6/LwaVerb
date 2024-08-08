@@ -1,8 +1,7 @@
 
 #pragma once
 
-// TODO: Remove JuceHeader
-#include <JuceHeader.h>
+#include "juce_audio_processors/juce_audio_processors.h"
 #include "DspComponents.h"
 
 #undef USE_MODULATION

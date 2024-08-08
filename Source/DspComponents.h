@@ -5,8 +5,7 @@
 #include <math.h>
 
 #include "../dsp/delay.h"
-// TODO: Remove JuceHeader
-#include "JuceHeader.h"
+#include "juce_dsp/juce_dsp.h"
 
 #undef DELAY_MOD
 #define DELAY_MOD 0

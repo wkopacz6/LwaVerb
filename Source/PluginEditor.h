@@ -1,7 +1,6 @@
 
 #pragma once
 
-// TODO: Remove JuceHeader
 #include "juce_gui_basics/juce_gui_basics.h"
 
 #include "PluginProcessor.h"
