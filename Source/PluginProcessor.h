@@ -1,30 +1,31 @@
 
 #pragma once
 
-#include "juce_audio_processors/juce_audio_processors.h"
 #include "DspComponents.h"
+#include "juce_audio_processors/juce_audio_processors.h"
 
 #undef USE_MODULATION
 #define USE_MODULATION 0
 
 namespace Params
 {
-static constexpr auto* dryId { "dry" };
-static constexpr auto* wetId { "wet" };
-static constexpr auto* roomSizeId { "roomSize" };
-static constexpr auto* decayId { "decay" };
-static constexpr auto* modFreqId { "modulationFreq" };
-static constexpr auto* modAmpId { "modulationAmp" };
-static constexpr auto* lpCutoffId { "lpCutoff" };
+    static constexpr auto* dryId { "dry" };
+    static constexpr auto* wetId { "wet" };
+    static constexpr auto* roomSizeId { "roomSize" };
+    static constexpr auto* decayId { "decay" };
+    static constexpr auto* modFreqId { "modulationFreq" };
+    static constexpr auto* modAmpId { "modulationAmp" };
+    static constexpr auto* lpCutoffId { "lpCutoff" };
 }
 
 //==============================================================================
 /**
 */
-class TheVerbAudioProcessor  : public juce::AudioProcessor
-                            #if JucePlugin_Enable_ARA
-                             , public juce::AudioProcessorARAExtension
-                            #endif
+class TheVerbAudioProcessor : public juce::AudioProcessor
+#if JucePlugin_Enable_ARA
+    ,
+                              public juce::AudioProcessorARAExtension
+#endif
 {
 public:
     //==============================================================================
@@ -35,9 +36,9 @@ public:
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
 
-   #ifndef JucePlugin_PreferredChannelConfigurations
+#ifndef JucePlugin_PreferredChannelConfigurations
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
-   #endif
+#endif
 
     void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
 
@@ -64,7 +65,7 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     juce::AudioProcessorValueTreeState apvts;
-    
+
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 
 private:
@@ -73,6 +74,6 @@ private:
     Reverb<> reverbR;
     std::array<float, NUM_CHANNELS> workingArray;
     std::array<float, NUM_CHANNELS> outputArray;
-    
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TheVerbAudioProcessor)
 };
