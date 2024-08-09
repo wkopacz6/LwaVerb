@@ -9,7 +9,7 @@
 //==============================================================================
 /**
 */
-class TheVerbAudioProcessorEditor  : public juce::AudioProcessorEditor
+class TheVerbAudioProcessorEditor : public juce::AudioProcessorEditor
 {
 public:
     TheVerbAudioProcessorEditor (TheVerbAudioProcessor&);
@@ -21,10 +21,10 @@ public:
 
 private:
     TheVerbAudioProcessor& audioProcessor;
-    
+
     // LnF
     HexKnobLnf knobLnf;
-    
+
     // Slider
     HexKnob wet { "WET" };
     HexKnob dry { "DRY" };
@@ -35,7 +35,7 @@ private:
 #if USE_MODULATION
     HexKnob modFreqMult { "MODULATION" };
 #endif
-    
+
     // Slider Attachments
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> wetAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> dryAttachment;
@@ -46,8 +46,8 @@ private:
 #if USE_MODULATION
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> modFreqMultAttachment;
 #endif
-    
-    std::unique_ptr<juce::Drawable> logo { juce::Drawable::createFromImageData(BinaryData::logo_svg, BinaryData::logo_svgSize) };
-    
+
+    std::unique_ptr<juce::Drawable> logo { juce::Drawable::createFromImageData (BinaryData::logo_svg, BinaryData::logo_svgSize) };
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TheVerbAudioProcessorEditor)
 };
