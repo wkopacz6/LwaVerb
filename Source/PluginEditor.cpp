@@ -75,10 +75,10 @@ void TheVerbAudioProcessorEditor::resized()
     lpCutoff.setBounds(reverbControlsRow.removeFromLeft(knobSize));
     
     b.removeFromTop(margin);
-    
+    const auto wetDrySideMargin { 112 };
     auto wetDryRow { b.removeFromTop(knobSize) };
-    wetDryRow.removeFromLeft(112);
-    wetDryRow.removeFromRight(112);
+    wetDryRow.removeFromLeft(wetDrySideMargin);
+    wetDryRow.removeFromRight(wetDrySideMargin);
     dry.setBounds(wetDryRow.removeFromLeft(knobSize));
     wetDryRow.removeFromLeft(margin);
     wet.setBounds(wetDryRow.removeFromLeft(knobSize));
