@@ -1,7 +1,5 @@
-
 #pragma once
 
-// TODO: Remove JuceHeader
 #include "juce_gui_basics/juce_gui_basics.h"
 
 #include "PluginProcessor.h"
@@ -16,11 +14,11 @@ class TheVerbAudioProcessorEditor  : public juce::AudioProcessorEditor
 public:
     TheVerbAudioProcessorEditor (TheVerbAudioProcessor&);
     ~TheVerbAudioProcessorEditor() override;
-    
+
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
-    
+
 private:
     TheVerbAudioProcessor& audioProcessor;
     
@@ -35,7 +33,7 @@ private:
     HexKnob lpCutoff { "DAMPING" };
 
 #if USE_MODULATION
-    HexKnob modFreqMult { juce::Slider::SliderStyle::RotaryVerticalDrag, juce::Slider::TextEntryBoxPosition::NoTextBox };
+    HexKnob modFreqMult { "MODULATION" };
 #endif
     
     // Slider Attachments

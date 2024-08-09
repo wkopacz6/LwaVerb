@@ -2,6 +2,11 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+namespace
+{
+static constexpr float logoSize { 40.0f };
+}
+
 //==============================================================================
 TheVerbAudioProcessorEditor::TheVerbAudioProcessorEditor (TheVerbAudioProcessor& p)
     : AudioProcessorEditor (&p)
@@ -37,9 +42,12 @@ void TheVerbAudioProcessorEditor::paint (juce::Graphics& g)
     
     auto b { getLocalBounds().toFloat() };
     
+    // top margin
     b.removeFromTop(30.0f);
-    logo->drawWithin(g, b.removeFromTop(40.0f), juce::RectanglePlacement::centred, 1.0);
     
+    logo->drawWithin(g, b.removeFromTop(logoSize), juce::RectanglePlacement::centred, 1.0);
+    
+    // below logo margin
     b.removeFromTop(25.0f);
 }
 
@@ -55,7 +63,7 @@ void TheVerbAudioProcessorEditor::resized()
     b.removeFromLeft(margin);
     b.removeFromRight(margin);
     
-    logo->setBounds(b.removeFromTop(30));
+    logo->setBounds(b.removeFromTop(logoSize));
     
     b.removeFromTop(margin);
     
@@ -67,10 +75,10 @@ void TheVerbAudioProcessorEditor::resized()
     lpCutoff.setBounds(reverbControlsRow.removeFromLeft(knobSize));
     
     b.removeFromTop(margin);
-    
+    const auto wetDrySideMargin { 112 };
     auto wetDryRow { b.removeFromTop(knobSize) };
-    wetDryRow.removeFromLeft(112);
-    wetDryRow.removeFromRight(112);
+    wetDryRow.removeFromLeft(wetDrySideMargin);
+    wetDryRow.removeFromRight(wetDrySideMargin);
     dry.setBounds(wetDryRow.removeFromLeft(knobSize));
     wetDryRow.removeFromLeft(margin);
     wet.setBounds(wetDryRow.removeFromLeft(knobSize));

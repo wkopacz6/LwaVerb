@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    TheVerbKnob.h
-    Created: 5 Aug 2024 10:14:06am
-    Author:  Walter Kopacz
-
-  ==============================================================================
-*/
-
 #pragma once
 
 #include "juce_gui_basics/juce_gui_basics.h"
@@ -34,7 +24,9 @@ public:
     HexKnob(juce::StringRef name);
     
     void resized() override;
+    /// So the SliderAttachments can attach to the slider
     juce::Slider& getSlider() { return knob; }
+
 private:
     juce::Slider knob { juce::Slider::SliderStyle::RotaryVerticalDrag, juce::Slider::TextEntryBoxPosition::NoTextBox };
     juce::Label label;

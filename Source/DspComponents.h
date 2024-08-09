@@ -1,12 +1,10 @@
-
 #pragma once
 
 #include <cmath>
 #include <math.h>
 
 #include "../dsp/delay.h"
-// TODO: Remove JuceHeader
-#include "JuceHeader.h"
+#include "juce_dsp/juce_dsp.h"
 
 #undef DELAY_MOD
 #define DELAY_MOD 0
@@ -16,9 +14,10 @@
 #undef DIFF_STEPS
 #define DIFF_STEPS 6
 
+
+// NOTE: This mixer code was lifted from signalsmith code
 namespace Mixer
 {
-
 // Use `Householder<float, 8>::inPlace(data)` - size must be ≥ 1
 template<typename Sample, int size>
 class Householder {
