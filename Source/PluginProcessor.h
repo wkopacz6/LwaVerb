@@ -1,18 +1,12 @@
-/*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin processor.
-
-  ==============================================================================
-*/
 
 #pragma once
 
+// TODO: Remove JuceHeader
 #include <JuceHeader.h>
 #include "DspComponents.h"
 
 #undef USE_MODULATION
-#define USE_MODULATION 1
+#define USE_MODULATION 0
 
 namespace Params
 {

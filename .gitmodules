@@ -1,3 +1,7 @@
 [submodule "dsp"]
 	path = dsp
 	url = https://signalsmith-audio.co.uk/code/dsp.git
+[submodule "submodules/melatonin_blur"]
+	path = submodules/melatonin_blur
+	url = https://github.com/sudara/melatonin_blur.git
+	branch = main

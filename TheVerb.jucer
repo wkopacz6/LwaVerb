@@ -4,6 +4,13 @@
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
               companyName="Walter'sPlugin">
   <MAINGROUP id="u5xFQ3" name="TheVerb">
+    <GROUP id="{EB64B4A4-7C37-B139-9DA1-3550FBBC862F}" name="Assets">
+      <FILE id="pKfHYL" name="inner_hex.svg" compile="0" resource="1" file="Assets/inner_hex.svg"/>
+      <FILE id="LeeduL" name="logo.svg" compile="0" resource="1" file="Assets/logo.svg"/>
+      <FILE id="RLY0sM" name="ostrich-regular.ttf" compile="0" resource="1"
+            file="Assets/ostrich-regular.ttf"/>
+      <FILE id="P49kPk" name="outer_hex.svg" compile="0" resource="1" file="Assets/outer_hex.svg"/>
+    </GROUP>
     <GROUP id="{F5BC306E-D046-D1B1-B439-70CA0E284C0C}" name="dsp">
       <FILE id="pwMBzO" name="common.h" compile="0" resource="0" file="dsp/common.h"/>
       <FILE id="nuqxZw" name="curves.h" compile="0" resource="0" file="dsp/curves.h"/>
@@ -20,6 +27,12 @@
       <FILE id="lfrQtN" name="windows.h" compile="0" resource="0" file="dsp/windows.h"/>
     </GROUP>
     <GROUP id="{112F8E5E-061B-2D0A-2121-1394ED038454}" name="Source">
+      <GROUP id="{C508FE62-9A54-F568-2D6D-922C99C3773B}" name="ui">
+        <FILE id="NjG1c6" name="UiHelpers.cpp" compile="1" resource="0" file="Source/UiHelpers.cpp"/>
+        <FILE id="foN4Qh" name="UiHelpers.h" compile="0" resource="0" file="Source/UiHelpers.h"/>
+        <FILE id="UuqP7O" name="TheVerbKnob.cpp" compile="1" resource="0" file="Source/TheVerbKnob.cpp"/>
+        <FILE id="OIr2jY" name="TheVerbKnob.h" compile="0" resource="0" file="Source/TheVerbKnob.h"/>
+      </GROUP>
       <FILE id="JNwIli" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="KIIjVO" name="DspComponents.cpp" compile="1" resource="0"
@@ -46,15 +59,14 @@
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="melatonin_blur" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
   </MODULES>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="1" name="Debug" targetName="TheVerb"
-                       auBinaryLocation="${HOME}/Library/Audio/Plug-Ins/Components/"/>
-        <CONFIGURATION isDebug="0" name="Release" targetName="TheVerb"
-                       auBinaryLocation="${HOME}/Library/Audio/Plug-Ins/AU/"/>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="TheVerb" auBinaryLocation="${HOME}/Library/Audio/Plug-Ins/Components/"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="TheVerb" auBinaryLocation="${HOME}/Library/Audio/Plug-Ins/AU/"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_audio_basics" path="../Venerius/JUCE/modules"/>
@@ -69,6 +81,7 @@
         <MODULEPATH id="juce_graphics" path="../Venerius/JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../Venerius/JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../Venerius/JUCE/modules"/>
+        <MODULEPATH id="melatonin_blur" path="submodules"/>
       </MODULEPATHS>
     </XCODE_MAC>
   </EXPORTFORMATS>

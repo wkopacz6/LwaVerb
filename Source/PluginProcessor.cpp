@@ -154,14 +154,18 @@ void TheVerbAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     reverbL.setRoomSizeMs(roomSizeFudge);
     reverbL.setRt60(rt60Fudge);
     reverbL.setLpCutoff(*apvts.getRawParameterValue(Params::lpCutoffId));
+#if DELAY_MOD
     reverbL.setDelayModulation(*apvts.getRawParameterValue(Params::modFreqId), *apvts.getRawParameterValue(Params::modAmpId));
+#endif
 
     reverbR.setDry(*apvts.getRawParameterValue(Params::dryId));
     reverbR.setWet(*apvts.getRawParameterValue((Params::wetId)));
     reverbR.setRoomSizeMs(roomSizeFudge);
     reverbR.setRt60(rt60Fudge);
     reverbR.setLpCutoff(*apvts.getRawParameterValue(Params::lpCutoffId));
+#if DELAY_MOD
     reverbR.setDelayModulation(*apvts.getRawParameterValue(Params::modFreqId), *apvts.getRawParameterValue(Params::modAmpId));
+#endif
     
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
